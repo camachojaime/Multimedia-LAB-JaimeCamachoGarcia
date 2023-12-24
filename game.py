@@ -9,7 +9,7 @@ pygame.init()
 pygame.mixer.init()
 
 skin = sys.argv[1]
-fondo = pygame.image.load('imagenes/J-fondo-1920x1080.jpg')
+fondo = pygame.image.load('imagenes/fondo-1920x1080.jpg')
 
 laser_sonido = pygame.mixer.Sound('sound/laser.wav')
 explosion_sonido = pygame.mixer.Sound('sound/explosion.wav')
@@ -86,22 +86,20 @@ class Jugador(pygame.sprite.Sprite):
 class Enemigos(pygame.sprite.Sprite):
     def __init__(self, a, b):
         super().__init__()
-        originalImage = pygame.image.load('imagenes/J-ship1-cazaTipe.png').convert_alpha()
+        originalImage = pygame.image.load('imagenes/ship1-cazaTipe.png').convert_alpha()
         self.image = pygame.transform.scale(originalImage, (150, 150))
         self.image = pygame.transform.rotate(self.image, 180)
         self.rect = self.image.get_rect()
 
-        # Definir intervalos
-        izquierda_intervalo = (0, 50)
-        derecha_intervalo = (width - 50, width)
+        rangeIzq = (0, 50)
+        rangeDer = (width - 50, width)
 
-        # Elegir posición y velocidad en base a la dirección
-        if random.choice([True, False]):  # True: aparecerá en la izquierda, False: aparecerá en la derecha
-            self.rect.x = random.randrange(*izquierda_intervalo)
-            self.velocidad_x = 5  # Mover hacia la derecha
+        if random.choice([True, False]):
+            self.rect.x = random.randrange(*rangeIzq)
+            self.velocidad_x = 5
         else:
-            self.rect.x = random.randrange(*derecha_intervalo)
-            self.velocidad_x = -5  # Mover hacia la izquierda
+            self.rect.x = random.randrange(*rangeDer)
+            self.velocidad_x = -5
 
         self.rect.y = 10
 
@@ -120,7 +118,7 @@ class Enemigos(pygame.sprite.Sprite):
 class Balas(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        originalImage = pygame.image.load('imagenes/J-shootDefaultImage.png').convert_alpha()
+        originalImage = pygame.image.load('imagenes/shootDefaultImage.png').convert_alpha()
         self.image = pygame.transform.scale(originalImage, (50, 50))
 
         self.rect = self.image.get_rect()
@@ -136,7 +134,7 @@ class Balas(pygame.sprite.Sprite):
 class Balas_enemigos(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        originalImage = pygame.image.load('imagenes/J-shootEnemyImage.png').convert_alpha()
+        originalImage = pygame.image.load('imagenes/shootEnemyImage.png').convert_alpha()
         self.image = pygame.transform.scale(originalImage, (50, 50))
 
         self.rect = self.image.get_rect()
@@ -218,6 +216,7 @@ while run:
         grupo_jugador.add(explo)
         explosion_sonido.set_volume(0.3)
         explosion_sonido.play()
+
     
     # Coliciones jugador - balas_enemigo
     colicion2 = pygame.sprite.spritecollide(player, grupo_balas_enemigos, True)
@@ -245,20 +244,6 @@ while run:
     texto_puntuacion(window, (' SCORE: ' + str(score) + '       '), 30, width-85, 2)
     barra_vida(window, width-285, 0, player.vida)
 
-    # if not run:
-    #     subprocess.run([sys.executable, 'saveScore.py', score, ""])
-
     pygame.display.flip()
 
-    # if not run:
-    #     subprocess.run([sys.executable, 'saveScore.py', score, ""])
-
-# print("LLEGA")
-# subprocess.run([sys.executable, 'saveScore.py', score, ""])
-
 pygame.quit()
-
-
-
-
-        
